@@ -19,11 +19,11 @@ const leaderboardModel = new mongoose.Schema({
     default:1000,
   },
   totalwins:{
-    type:number,
+    type:Number,
     default:0
   },
   totalgames:{
-    type:number,
+    type:Number,
     default:0
   },
   score:{
