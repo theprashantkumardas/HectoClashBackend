@@ -6,6 +6,14 @@ const leaderboardModel = new mongoose.Schema({
     ref: "User",
     required: true
   },
+  country:{
+   type:String,
+   default:"India"
+  },
+  avatar:{
+    type:String,
+    default:"",
+  },
   rank:{
     type:Number,
     default:1000,
@@ -13,7 +21,19 @@ const leaderboardModel = new mongoose.Schema({
   totalwins:{
     type:number,
     default:0
-  }
+  },
+  totalgames:{
+    type:number,
+    default:0
+  },
+  score:{
+    type:Number,
+    default:0
+  },
+  isActive:{
+    type:Boolean,
+    default:true
+  },
 })
 
 const Leaderboard = mongoose.model("Leaderboard", leaderboardModel)
