@@ -40,7 +40,6 @@ const leaderboardModel = new mongoose.Schema(
   },
   {
     timestamps: true,
-    versionKey: false,
   }
 );
 
