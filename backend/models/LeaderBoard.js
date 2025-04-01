@@ -20,11 +20,13 @@ const leaderboardModel = new mongoose.Schema({
   },
   totalwins:{
     type:Number,
-    default:0
+    default:0,
+    min:0
   },
   totalgames:{
     type:Number,
-    default:0
+    default:0,
+    min:0
   },
   score:{
     type:Number,
@@ -34,6 +36,9 @@ const leaderboardModel = new mongoose.Schema({
     type:Boolean,
     default:true
   },
+},{
+  timestamps:true,
+  versionKey:false
 })
 
 const Leaderboard = mongoose.model("Leaderboard", leaderboardModel)
