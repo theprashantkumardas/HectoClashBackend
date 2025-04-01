@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserModel = new mongoose.model({
+const UserModel = new mongoose.Schema({
   name:{
     type:String,
     required:true,
@@ -22,10 +22,15 @@ const UserModel = new mongoose.model({
     minlength:[6,"Password must be at least 6 characters"],
     maxlength:[20,"Password must be at most 20 characters"],
   },
-  role:{
+  userId:{
     type:String,
-    enum:["admin", "player"],
-    default:"player"
+    required:true,
+    unique:true,
+  },
+  playerId:{
+    type:String,
+    required:true,
+    unique:true,
   },
   avatar: {
     type: String,
@@ -33,14 +38,6 @@ const UserModel = new mongoose.model({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
-  createdAt:{
-    type:Date,
-    default:Date.now
-  },
-  updatedAt:{
-    type:Date,
-    default:Date.now
-  },
 },{
   timestamps:true,
   versionKey:false
