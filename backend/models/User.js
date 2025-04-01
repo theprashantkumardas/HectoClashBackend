@@ -22,11 +22,6 @@ const UserModel = new mongoose.Schema({
     minlength:[6,"Password must be at least 6 characters"],
     maxlength:[20,"Password must be at most 20 characters"],
   },
-  userId:{
-    type:String,
-    required:true,
-    unique:true,
-  },
   playerId:{
     type:String,
     required:true,
