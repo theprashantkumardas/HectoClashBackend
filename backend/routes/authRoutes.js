@@ -1,8 +1,16 @@
-const express = require("express");
-const { register, login } = require("../controllers/authController");
-const router = express.Router();
+const mongoose = require("mongoose");
 
-router.post("/register", register);
-router.post("/login", login);
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB Connected!");
+  } catch (error) {
+    console.error("MongoDB Connection Error:", error);
+    process.exit(1);
+  }
+};
 
-module.exports = router;
+module.exports = connectDB;
