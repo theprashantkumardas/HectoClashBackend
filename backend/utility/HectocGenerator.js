@@ -1,0 +1,183 @@
+import HectocChallenge from './HectocChallenge.js';
+
+class HectocGenerator {
+    static UNSOLVABLE_HECTOCS = [
+        new HectocChallenge({ firstDigit: 1, secondDigit: 1, thirdDigit: 2, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 1, thirdDigit: 4, fourthDigit: 1, fifthDigit: 2, sixthDigit: 3 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 1, thirdDigit: 5, fourthDigit: 5, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 1, thirdDigit: 5, fourthDigit: 8, fifthDigit: 2, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 1, thirdDigit: 6, fourthDigit: 5, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 2, thirdDigit: 1, fourthDigit: 1, fifthDigit: 4, sixthDigit: 3 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 2, thirdDigit: 1, fourthDigit: 5, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 3, thirdDigit: 1, fourthDigit: 1, fifthDigit: 1, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 4, thirdDigit: 1, fourthDigit: 1, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 5, thirdDigit: 6, fourthDigit: 5, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 6, thirdDigit: 7, fourthDigit: 1, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 6, thirdDigit: 7, fourthDigit: 4, fifthDigit: 5, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 1, fourthDigit: 7, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 5, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 6, fourthDigit: 6, fifthDigit: 1, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 7, thirdDigit: 8, fourthDigit: 9, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 8, thirdDigit: 4, fourthDigit: 1, fifthDigit: 5, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 8, thirdDigit: 5, fourthDigit: 5, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 8, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 1, secondDigit: 8, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 2, secondDigit: 1, thirdDigit: 1, fourthDigit: 1, fifthDigit: 4, sixthDigit: 3 }),
+        new HectocChallenge({ firstDigit: 2, secondDigit: 1, thirdDigit: 1, fourthDigit: 5, fifthDigit: 3, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 5, thirdDigit: 1, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 6, thirdDigit: 1, fourthDigit: 8, fifthDigit: 6, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 6, thirdDigit: 3, fourthDigit: 3, fifthDigit: 6, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 6, thirdDigit: 6, fourthDigit: 3, fifthDigit: 6, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 8, thirdDigit: 3, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 3, secondDigit: 8, thirdDigit: 8, fourthDigit: 8, fifthDigit: 3, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 5, secondDigit: 9, thirdDigit: 8, fourthDigit: 9, fifthDigit: 9, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 1, thirdDigit: 1, fourthDigit: 1, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 1, thirdDigit: 1, fourthDigit: 1, fifthDigit: 7, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 1, thirdDigit: 7, fourthDigit: 6, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 1, thirdDigit: 7, fourthDigit: 6, fifthDigit: 7, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 1, thirdDigit: 7, fourthDigit: 7, fifthDigit: 6, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 3, thirdDigit: 3, fourthDigit: 6, fifthDigit: 3, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 3, thirdDigit: 9, fourthDigit: 6, fifthDigit: 6, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 1, fourthDigit: 6, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 4, fourthDigit: 1, fifthDigit: 4, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 4, fourthDigit: 9, fifthDigit: 8, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 1, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 1, fifthDigit: 6, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 6, fifthDigit: 1, sixthDigit: 5 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 6, fifthDigit: 5, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 6, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 6, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 6, fourthDigit: 7, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 6, thirdDigit: 7, fourthDigit: 6, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 5, fourthDigit: 1, fifthDigit: 5, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 6, fourthDigit: 1, fifthDigit: 1, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 6, fourthDigit: 1, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 6, fourthDigit: 1, fifthDigit: 7, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 6, fourthDigit: 6, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 6, fourthDigit: 7, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 7, thirdDigit: 7, fourthDigit: 7, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 8, thirdDigit: 1, fourthDigit: 1, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 6, secondDigit: 8, thirdDigit: 1, fourthDigit: 6, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 1, fourthDigit: 1, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 1, fourthDigit: 7, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 7, fourthDigit: 7, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 8, fourthDigit: 1, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 9, fourthDigit: 1, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 1, thirdDigit: 9, fourthDigit: 8, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 4, thirdDigit: 5, fourthDigit: 1, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 4, thirdDigit: 7, fourthDigit: 7, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 4, thirdDigit: 7, fourthDigit: 7, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 4, thirdDigit: 7, fourthDigit: 8, fifthDigit: 7, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 4, thirdDigit: 8, fourthDigit: 7, fifthDigit: 7, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 1, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 1, fourthDigit: 1, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 1, fourthDigit: 7, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 6, fourthDigit: 1, fifthDigit: 1, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 6, fourthDigit: 8, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 7, fourthDigit: 7, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 6, thirdDigit: 7, fourthDigit: 7, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 1, fourthDigit: 8, fifthDigit: 1, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 3, fourthDigit: 1, fifthDigit: 6, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 3, fourthDigit: 7, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 6, fourthDigit: 7, fifthDigit: 6, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 8, fourthDigit: 4, fifthDigit: 5, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 8, fourthDigit: 5, fifthDigit: 5, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 7, thirdDigit: 8, fourthDigit: 9, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 8, thirdDigit: 1, fourthDigit: 1, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 8, thirdDigit: 1, fourthDigit: 1, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 8, thirdDigit: 1, fourthDigit: 2, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 8, thirdDigit: 1, fourthDigit: 6, fifthDigit: 7, sixthDigit: 6 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 8, thirdDigit: 1, fourthDigit: 7, fifthDigit: 1, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 9, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 7, secondDigit: 9, thirdDigit: 9, fourthDigit: 9, fifthDigit: 7, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 7, fourthDigit: 7, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 7, fourthDigit: 7, fifthDigit: 8, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 8, fourthDigit: 8, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 9, fourthDigit: 7, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 9, fourthDigit: 8, fifthDigit: 7, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 9, fourthDigit: 8, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 1, thirdDigit: 9, fourthDigit: 8, fifthDigit: 8, sixthDigit: 7 }),
+
+        new HectocChallenge({ firstDigit: 8, secondDigit: 3, thirdDigit: 8, fourthDigit: 3, fifthDigit: 8, sixthDigit: 3 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 3, thirdDigit: 8, fourthDigit: 5, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 3, thirdDigit: 8, fourthDigit: 8, fifthDigit: 5, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 3, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 3 }),
+
+        new HectocChallenge({ firstDigit: 8, secondDigit: 5, thirdDigit: 3, fourthDigit: 8, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 5, thirdDigit: 8, fourthDigit: 8, fifthDigit: 3, sixthDigit: 8 }),
+
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 1, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 5, fifthDigit: 3, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 8, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 7, thirdDigit: 8, fourthDigit: 9, fifthDigit: 8, sixthDigit: 8 }),
+
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 1, fourthDigit: 7, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 1, fourthDigit: 8, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 1, fourthDigit: 8, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 1, fourthDigit: 9, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 5, fourthDigit: 8, fifthDigit: 3, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 7, fourthDigit: 7, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 7, fourthDigit: 8, fifthDigit: 1, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 7, fourthDigit: 8, fifthDigit: 8, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 1, fifthDigit: 7, sixthDigit: 8 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 1, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 3, fifthDigit: 8, sixthDigit: 3 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 7, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 1 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 7, fifthDigit: 8, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 8, fifthDigit: 1, sixthDigit: 7 }),
+        new HectocChallenge({ firstDigit: 8, secondDigit: 8, thirdDigit: 8, fourthDigit: 8, fifthDigit: 6, sixthDigit: 1 }),
+
+        new HectocChallenge({ firstDigit: 9, secondDigit: 5, thirdDigit: 1, fourthDigit: 9, fifthDigit: 9, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 9, secondDigit: 5, thirdDigit: 8, fourthDigit: 9, fifthDigit: 9, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 9, secondDigit: 6, thirdDigit: 1, fourthDigit: 9, fifthDigit: 9, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 9, secondDigit: 6, thirdDigit: 9, fourthDigit: 1, fifthDigit: 9, sixthDigit: 9 }),
+        new HectocChallenge({ firstDigit: 9, secondDigit: 6, thirdDigit: 9, fourthDigit: 6, fifthDigit: 5, sixthDigit: 9 })
+
+        
+    ];
+
+    static generateDigit() {
+        return Math.floor(Math.random() * (HectocChallenge.MAX - HectocChallenge.MIN + 1)) + HectocChallenge.MIN;
+    }
+
+    static generate() {
+        let challenge;
+        do {
+            challenge = new HectocChallenge({
+                firstDigit: this.generateDigit(),
+                secondDigit: this.generateDigit(),
+                thirdDigit: this.generateDigit(),
+                fourthDigit: this.generateDigit(),
+                fifthDigit: this.generateDigit(),
+                sixthDigit: this.generateDigit()
+            });
+        } while (this.UNSOLVABLE_HECTOCS.some(unsolvable => unsolvable.toString() === challenge.toString()));
+
+        return challenge;
+    }
+}
+
+
+// Example usage:
+// console.log(HectocGenerator.generate().toString());
+
+export default HectocGenerator;
