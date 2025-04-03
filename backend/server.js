@@ -1,29 +1,23 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const connectDB = require("./src/config/db");
-const { Server } = require("socket.io");
-const http = require("http");
-
-// require("./src/routes/userRoutes")
+const authRoutes = require("./routes/authRoutes");
+const leaderboardRoutes = require("./routes/leaderboardRoutes");
 
 dotenv.config();
 connectDB();
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Import Routes
-// app.use("/api/auth", require("./src/routes/authRoutes"));
-// app.use("/api/users", );
-// app.use("/api/game", require("./src/routes/gameRoutes"));
+app.use("/api/auth", authRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
-// WebSocket Logic
-// require("./src/config/socket")(io);
+app.get("/", (req, res) => res.send("API is running..."));
 
 const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

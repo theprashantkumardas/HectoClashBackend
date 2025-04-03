@@ -1,32 +1,32 @@
 const mongoose = require("mongoose");
 
 const gameModel = new mongoose.Schema({
-  players:[
+  players: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
   ],
-  questionSet:[{
+  questionSet: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "QuestionSet",
     required: true,
   }],
-  TotalViews:{
-  type:Number,
-  default:0,
-  min:0
+  TotalViews: {
+    type: Number,
+    default: 0,
+    min: 0
   },
-  startTime:{
+  startTime: {
     type: Date,
     default: Date.now,
   },
-  endTime:{
+  endTime: {
     type: Date,
     default: null,
   },
-  gameStatus:{
+  gameStatus: {
     type: String,
     enum: ["pending", "ongoing", "completed"],
     default: "pending",
