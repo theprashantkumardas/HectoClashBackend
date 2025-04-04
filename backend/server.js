@@ -13,6 +13,9 @@ const math = require('mathjs'); // For safe expression evaluation
 
 const Game = require("./models/Game"); // Import Game model
 
+
+const friendRoutes = require('./routes/friendRoutes'); // Import the factory function
+
 dotenv.config();
 connectDB();
 
@@ -36,11 +39,14 @@ const GAME_TIME_LIMIT_SECONDS = 300; // Game duration
 // Share onlineUsers with Express routes
 app.set('onlineUsers', onlineUsers);
 
+io.sockets.server.settings = { onlineUsers: onlineUsers }; // A way to make it accessible
+
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);  // Add this line to use userRoutes
+app.use("/api/friends", friendRoutes(io)); // Initialize friend routes with io instance
 
 // Helper function to get user details for online users
 async function getOnlineUserDetails() {
@@ -206,12 +212,49 @@ async function emitOnlineUsersUpdate() {
                         currentUserId = userId;
                         onlineUsers[userId] = { socketId: socket.id, name: user.name }; // Store socketId and name
                         app.set('onlineUsers', onlineUsers);
+
+                        io.sockets.server.settings.onlineUsers = onlineUsers; // Update io state
+
                         await emitOnlineUsersUpdate();
                     } catch (err) {
                         console.error(`Error fetching user ${userId} on connect:`, err);
                     }
                 });
 
+                // socket.on("disconnect", async (reason) => {
+                //     console.log(`User disconnected: ${socket.id}, Reason: ${reason}`);
+                //     if (currentUserId && onlineUsers[currentUserId]?.socketId === socket.id) {
+                //         console.log(`Removing user ${currentUserId} (${onlineUsers[currentUserId]?.name}) from online list.`);
+
+                //         // --- Handle disconnect during active game (Forfeit) ---
+                //         const gameToEnd = Object.values(activeGames).find(g => g.player1Id === currentUserId || g.player2Id === currentUserId);
+                //         if (gameToEnd) {
+                //             console.log(`User ${currentUserId} disconnected during game ${gameToEnd.gameId}. Ending game.`);
+                //             const winner = gameToEnd.player1Id === currentUserId ? gameToEnd.player2Id : gameToEnd.player1Id;
+                //             const loser = currentUserId;
+                //             await endGame(gameToEnd.gameId, winner, loser, 'abandoned', 'opponent_disconnected');
+                //         }
+                //         // --- End Game Handling ---
+
+                //         delete onlineUsers[currentUserId];
+                //         app.set('onlineUsers', onlineUsers);
+                //         await emitOnlineUsersUpdate(); // Notify others
+                //     } else {
+                //         console.log(`Socket ${socket.id} disconnected without a tracked userId.`);
+                //         // Optional: Iterate onlineUsers to double-check if any user has this socket.id
+                //         const userIdToDelete = Object.keys(onlineUsers).find(id => onlineUsers[id]?.socketId === socket.id);
+                //         if (userIdToDelete) {
+                //             console.log(`Found and removing dangling user ${userIdToDelete} on disconnect.`);
+                //             delete onlineUsers[userIdToDelete];
+                //             app.set('onlineUsers', onlineUsers);
+                //             await emitOnlineUsersUpdate();
+                //         }
+                //     }
+                //     currentUserId = null;
+                // });
+
+                //SOcket disconnection logic
+                // --- Modify Socket.IO disconnect logic ---
                 socket.on("disconnect", async (reason) => {
                     console.log(`User disconnected: ${socket.id}, Reason: ${reason}`);
                     if (currentUserId && onlineUsers[currentUserId]?.socketId === socket.id) {
@@ -227,8 +270,11 @@ async function emitOnlineUsersUpdate() {
                         }
                         // --- End Game Handling ---
 
+                        console.log(`Removing user ${currentUserId} (${onlineUsers[currentUserId]?.name}) from online list.`);
                         delete onlineUsers[currentUserId];
+
                         app.set('onlineUsers', onlineUsers);
+                        io.sockets.server.settings.onlineUsers = onlineUsers; // Update io state
                         await emitOnlineUsersUpdate(); // Notify others
                     } else {
                         console.log(`Socket ${socket.id} disconnected without a tracked userId.`);
@@ -238,6 +284,9 @@ async function emitOnlineUsersUpdate() {
                             console.log(`Found and removing dangling user ${userIdToDelete} on disconnect.`);
                             delete onlineUsers[userIdToDelete];
                             app.set('onlineUsers', onlineUsers);
+
+                            io.sockets.server.settings.onlineUsers = onlineUsers;
+
                             await emitOnlineUsersUpdate();
                         }
                     }
