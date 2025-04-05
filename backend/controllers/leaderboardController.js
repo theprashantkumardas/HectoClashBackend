@@ -1,4 +1,4 @@
-/ controllers/leaderboardController.js
+// / controllers/leaderboardController.js
 const User = require('../models/User'); // Adjust path if necessary
 
 /**
