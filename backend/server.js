@@ -16,6 +16,9 @@ const Game = require("./models/Game"); // Import Game model
 
 const friendRoutes = require('./routes/friendRoutes'); // Import the factory function
 
+// Make sure the path is correct relative to server.js
+const HectocGenerator = require('./utility/HectocGenerator');
+
 dotenv.config();
 connectDB();
 
@@ -73,13 +76,23 @@ async function emitOnlineUsersUpdate() {
 }
 
                 // Generate Hectoc Puzzle
-                function generateHectocPuzzle() {
-                    let puzzle = '';
-                    for (let i = 0; i < 6; i++) {
-                        puzzle += Math.floor(Math.random() * 9) + 1; // Digits 1-9
-                    }
-                    return puzzle;
-                }
+                // function generateHectocPuzzle() {
+                //     let puzzle = '';
+                //     for (let i = 0; i < 6; i++) {
+                //         puzzle += Math.floor(Math.random() * 9) + 1; // Digits 1-9
+                //     }
+                //     return puzzle;
+                // }
+
+                /**
+                 * Validates a Hectoc solution attempt against the puzzle.
+                 * Checks if the correct set of digits were used and if the expression evaluates to 100.
+                 * @param {string} puzzle - The 6-digit puzzle string.
+                 * @param {string} solution - The player's solution expression.
+                 * @returns {{isValid: boolean, reason?: string, result?: number, error?: string}} Validation result.
+                 **/
+
+                
 
                 // Validate Hectoc Solution (Safely)
                 function validateHectocSolution(puzzle, solution) {
@@ -352,7 +365,19 @@ async function emitOnlineUsersUpdate() {
                     if (accepted) {
                         console.log(`${opponent.name} accepted challenge from ${challenger.name}. Starting game.`);
                         const gameId = uuidv4(); // Unique ID for this game session/room
-                        const puzzle = generateHectocPuzzle();
+                        
+                        //// const puzzle = generateHectocPuzzle();
+                        
+                        let puzzle = null;
+                        try {
+                            // *** CORRECTED: Use the imported HectocGenerator ***
+                            const challengeObject = HectocGenerator.generate(); // Returns HectocChallenge object
+                            puzzle = challengeObject.toString(); // Get the puzzle string
+                        } catch (puzzleError) {
+                            console.error("[Game Start] CRITICAL: Failed to generate Hectoc puzzle:", puzzleError);
+                            io.to(challenger.socketId).to(socket.id).emit('game_start_failed', { reason: 'server_puzzle_error' });
+                            return;
+                        }
                         const startTime = new Date();
 
                         // Store initial game details in memory
