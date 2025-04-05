@@ -27,6 +27,16 @@ const UserSchema = new mongoose.Schema(
      // You might add status later:
     // status: { type: String, enum: ['online', 'offline', 'in-game'], default: 'offline' }
     friends: [FriendSchema],
+
+    // *** ADD THIS FIELD FOR LEADERBOARD ***
+    points: {
+      type: Number,
+      default: 1000, // Start everyone with a base score (like ELO) or 0
+      index: true    // Add index for faster sorting on leaderboard queries
+  },
+    
+
+
   },
   { timestamps: true }
 );

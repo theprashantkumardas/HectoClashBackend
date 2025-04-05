@@ -1,71 +1,92 @@
-const LeaderBoard = require('../models/LeaderBoard.js');
-const User = require('../models/User.js');
+/ controllers/leaderboardController.js
+const User = require('../models/User'); // Adjust path if necessary
 
+/**
+ * @desc    Get Global Leaderboard
+ * @route   GET /api/leaderboard/global
+ * @access  Public (or Private if login required)
+ */
+const getGlobalLeaderboard = async (req, res) => {
+    try {
+        // Define how many top players to fetch
+        const limit = parseInt(req.query.limit) || 50; // Default to 50, allow override via query param
 
-// yeh code players ka score update kar raha h
-exports.submitScore = async(req,res)=>{
-  const { score, won } = req.body;
-  const userId = req.user._id;
+        // Fetch users, sort by points descending, limit results
+        const leaderboard = await User.find({}) // Fetch all users (or apply filters if needed)
+            .sort({ points: -1 }) // Sort by 'points' field, -1 for descending
+            .limit(limit)
+            .select('playerId name points wins losses draws totalGamesPlayed'); // Select fields needed for display
 
-  try{
-    let entry = await LeaderBoard.findOne({ user: userId });
-    if(!entry){
-     entry = new LeaderBoard(
-      {
-        user: userId,
-        score: score,
-        totalwins: won ? 1 : 0,
-        isActive: true,
-      }
-     )
-    }else{
-      entry.totalgames += 1;
-      if(won) entry.totalwins += 1;
-      entry.score = Math.max(entry.score, score);
-      entry.isActive = true;
+        res.json(leaderboard);
+
+    } catch (error) {
+        console.error('Error fetching global leaderboard:', error);
+        res.status(500).json({ message: 'Server error while fetching leaderboard.' });
     }
-    await entry.save();
-    res.json({
-      success: true,
-      message: "Score submitted successfully",
-      entry
-    })
-  }
-  catch(err){
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-}
+};
+
+// --- Placeholder for potential future leaderboard types ---
+
+/**
+ * @desc    Get Country Leaderboard (Example Structure)
+ * @route   GET /api/leaderboard/country/:countryName
+ * @access  Public (or Private)
+ */
+const getCountryLeaderboard = async (req, res) => {
+     try {
+        const limit = parseInt(req.query.limit) || 50;
+        const countryName = req.params.countryName; // Get country from route parameter
+
+         if (!countryName) {
+             return res.status(400).json({ message: 'Country name is required.' });
+         }
+
+        // Example: Assumes you have a 'country' field in your User model
+        const leaderboard = await User.find({ country: countryName }) // Filter by country
+            .sort({ points: -1 })
+            .limit(limit)
+            .select('playerId name points wins losses draws totalGamesPlayed country');
+
+         res.json(leaderboard);
+
+     } catch (error) {
+        console.error(`Error fetching country leaderboard for ${req.params.countryName}:`, error);
+        res.status(500).json({ message: 'Server error while fetching country leaderboard.' });
+    }
+};
+
+/**
+ * @desc    Get College Leaderboard (Example Structure)
+ * @route   GET /api/leaderboard/college/:collegeName
+ * @access  Public (or Private)
+ */
+const getCollegeLeaderboard = async (req, res) => {
+     try {
+        const limit = parseInt(req.query.limit) || 50;
+        const collegeName = req.params.collegeName;
+
+         if (!collegeName) {
+            return res.status(400).json({ message: 'College name is required.' });
+         }
+
+         // Example: Assumes you have a 'college' field in your User model
+        const leaderboard = await User.find({ college: collegeName }) // Filter by college
+            .sort({ points: -1 })
+            .limit(limit)
+             .select('playerId name points wins losses draws totalGamesPlayed college');
+
+         res.json(leaderboard);
+
+     } catch (error) {
+        console.error(`Error fetching college leaderboard for ${req.params.collegeName}:`, error);
+        res.status(500).json({ message: 'Server error while fetching college leaderboard.' });
+    }
+};
 
 
-// ranking kar rahe h players kko top 10 m
-exports.getLeaderboard = async(req,res)=>{
-  try{
-    const topPlayers = await LeaderBoard.find({ isActive: true })
-      .populate("user", "name email")
-      .sort({ score: -1 })
-      .limit(10);
-
-    res.json({
-      success: true,
-      topPlayers,
-    });
-  }catch(err){
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-}
-
-// isme rank check karenge
-
-exports.getRank = async(req,res)=>{
-  const userId = req.user._id;
-  try {
-    const users = await LeaderBoard.find().sort({ score: -1 }).select("user score");
-    const rank = users.findIndex((entry) => entry.user.toString() === userId.toString());
-
-    if (rank === -1) return res.status(404).json({ error: "User not found" });
-
-    res.json({ userId, rank: rank + 1 });
-  } catch (err) {
-    res.status(500).json({ error: "Internal Server Error", details: err.message });
-  }
-}
+module.exports = {
+    getGlobalLeaderboard,
+    // Export others when implemented
+    // getCountryLeaderboard,
+    // getCollegeLeaderboard,
+};
